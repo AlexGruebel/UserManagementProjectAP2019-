@@ -34,7 +34,7 @@ CREATE TABLE permissions (
   permission varchar(1000)
 );
 
-CREATE TABLE groups_permissions_map (
+CREATE TABLE group_permission_mapping (
   groupid int,
   permissionid int,
   PRIMARY KEY (groupid, permissionid)
