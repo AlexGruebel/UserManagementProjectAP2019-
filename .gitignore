@@ -23,3 +23,14 @@
 hs_err_pid*
 
 .vscode/
+
+#exclude maven files
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
