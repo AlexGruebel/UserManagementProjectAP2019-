@@ -52,5 +52,13 @@ VALUES('user', 'default group for every user'), ('admin', 'admin group');
 INSERT INTO users(uuname, pwhash)
 VALUES('root', 'notImplementedYet')
 
+/*user group mapping*/
 insert into user_group_mapping
+values(1,2),(2,1)
+
+/*group permission*/
+insert into permissions(upermissionname, permission)
+values('all', '*'), ('SelfUserDetails', '/userdetails/{id}')
+
+insert into group_permission_mapping(groupid, permissionid)
 values(1,2),(2,1)
