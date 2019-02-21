@@ -1,10 +1,11 @@
 package com.ap.usermanagementproject.controller;
 
-import com.ap.usermanagementproject.entities.Group;
-import com.ap.usermanagementproject.repositories.GroupRepository;
+import com.ap.usermanagementproject.entities.GroupDetail;
+import com.ap.usermanagementproject.repositories.GroupDetailRepository;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
 @RequestMapping("/groupdetail")
-public class GroupDetailController extends BaseController<Group, GroupRepository>{}
+public class GroupDetailController extends BaseController<GroupDetail, GroupDetailRepository>{}
