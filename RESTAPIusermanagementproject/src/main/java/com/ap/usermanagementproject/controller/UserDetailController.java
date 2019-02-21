@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/userdetail")
 public class UserDetailController extends BaseController<UserDetail, UserDetailRepository>{}
