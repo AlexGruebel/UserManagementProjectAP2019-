@@ -39,7 +39,7 @@ void Controll::initMainWindow(bool admin)
     {
         ui->showAdminTab(true);
     }
-    w->setWindowTitle("User Administration Tool");
+    ui->setWindowTitle("User Administration Tool");
     ui->show();
 
 }
