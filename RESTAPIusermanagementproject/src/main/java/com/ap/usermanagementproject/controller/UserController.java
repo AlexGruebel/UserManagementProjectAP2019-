@@ -7,6 +7,7 @@ import com.ap.usermanagementproject.repositories.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/")
 public class UserController{
 
     private UserRepository userRepository;
