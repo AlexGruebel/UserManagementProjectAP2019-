@@ -40,6 +40,12 @@ CREATE TABLE group_permission_mapping (
   PRIMARY KEY (groupid, permissionid)
 );
 
+create view user_permissions as
+select userid, replace(permission, '{id}', userid) as permission
+from user_group_mapping um
+join group_permission_mapping gpm on um.groupid = gpm.groupid
+join permissions p on gpm.permissionid = p.permissionid;
+
 /*default data*/
 
 /*standart groups*/
@@ -54,11 +60,11 @@ VALUES('root', 'notImplementedYet')
 
 /*user group mapping*/
 insert into user_group_mapping
-values(1,2),(2,1)
+values(1,2),(2,1);
 
 /*group permission*/
 insert into permissions(upermissionname, permission)
-values('all', '*'), ('SelfUserDetails', '/userdetails/{id}')
+values('all', '*'), ('SelfUserDetails', '/userdetails/{id}');
 
 insert into group_permission_mapping(groupid, permissionid)
-values(1,2),(2,1)
+values(1,2),(2,1);
