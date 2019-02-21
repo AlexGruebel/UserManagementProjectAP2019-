@@ -1,0 +1,39 @@
+//curl -H GET "http://localhost:8080/userdetail" --> später muss bei diesen Request noch User + PW mitgeben werden
+//curl mit allen Parametern: limit definiert die maxiamle Anzahl von User in einen Request. Z.B. mit den Parameter page=1 und limit=100 werden 
+//die ersten 100 User aus der DB zurückgegeben, mit den Paramter page=2 und limit=100 werden die zweiten 100 User aus der DB zurückgegeben 
+//curl -H GET "http://localhost:8080/userdetail?page=1&limit=100" 
+//mit curl http://localhost:8080/userdetail/1 kann z.B. der User mit der ID 1 angefragt werden
+{
+    //übergeben Parameter Page und limit: standart Page=1 & limit=100
+    "page": 1, 
+    "limit": 100,
+    //Array von allen User
+    "items": [
+        {
+            "id": 1,
+            "userName": "root",
+            //pwhash wird noch in Password umbenannt
+            "pwhash": "notImplementedYet",
+            "mail": null,
+            //alle Gruppen des User (entspricht /group), wenn mehr Informationen zu einer Gruppe gebraucht werden muss dies bei der URL /groupdetail angefragt werden
+            "groups": [
+                {
+                    "id": 2,
+                    "groupname": "admin"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "userName": "test",
+            "pwhash": "test",
+            "mail": null,
+            "groups": [
+                {
+                    "id": 1,
+                    "groupname": "user"
+                }
+            ]
+        }
+    ]
+}

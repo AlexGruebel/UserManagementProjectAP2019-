@@ -1,0 +1,30 @@
+{
+    "page": 1, 
+    "limit": 100,
+    "items": [
+        {
+            "id": 1,
+            "userName": "root",
+            "pwhash": "notImplementedYet",
+            "mail": null,
+            "groups": [
+                {
+                    "id": 2,
+                    "groupname": "admin"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "userName": "test",
+            "pwhash": "test",
+            "mail": null,
+            "groups": [
+                {
+                    "id": 1,
+                    "groupname": "user"
+                }
+            ]
+        }
+    ]
+}
