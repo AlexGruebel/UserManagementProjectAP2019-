@@ -51,3 +51,6 @@ VALUES('user', 'default group for every user'), ('admin', 'admin group');
 
 INSERT INTO users(uuname, pwhash)
 VALUES('root', 'notImplementedYet')
+
+insert into user_group_mapping
+values(1,2),(2,1)
