@@ -1,14 +1,13 @@
 package com.ap.usermanagementproject.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.ap.usermanagementproject.entities.ResponseBodyMultipleItems;
 import com.ap.usermanagementproject.entities.User;
 import com.ap.usermanagementproject.repositories.UserRepository;
 
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/")
 public class UserController{
 
     private UserRepository userRepository;
@@ -18,9 +17,11 @@ public class UserController{
     }
 
     @GetMapping("/user")
-    public List<User> getuser(){        
-        List<User> users = new ArrayList<User>();
-        this.userRepository.findAll().forEach(user -> users.add(user));
-        return users;
+    public ResponseBodyMultipleItems<User> getuser(@RequestParam(required = false, defaultValue = "1") Integer page
+                                                  ,@RequestParam(required = false, defaultValue = "100") Short limit) 
+    {        
+        ResponseBodyMultipleItems<User> body = new ResponseBodyMultipleItems<User>(page, limit);
+        body.fillBodyWithRepository(userRepository);
+        return body;
     }
 }
