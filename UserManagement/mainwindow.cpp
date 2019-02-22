@@ -4,6 +4,12 @@
 
 #include "QDebug"
 
+enum itemTypes
+{
+    value = 0,
+    user = 1
+};
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -34,11 +40,38 @@ void MainWindow::initTree()
     ui->treeWidget->addTopLevelItem(groupItem);
     ui->treeWidget->addTopLevelItem(permissionItem);
 
+    connect(
+        ui->treeWidget, &QTreeWidget::itemExpanded,
+        [=]( QTreeWidgetItem * item )
+    {
+        if(item->type() == itemTypes::user)
+        {
+            emit userExpanded(item->data(0, Qt::UserRole).toInt(), item);
+        }
+    });
+
     QList<QPair<int, QString>> list = ApiSingleton::getInstance().userList();
 
     for (int var = 0; var < list.size(); ++var)
     {
-        userItem->addChild(new QTreeWidgetItem({QString::number(list.at(var).first), list.at(var).second}));
+        QTreeWidgetItem *item = new QTreeWidgetItem({QString::number(list.at(var).first), list.at(var).second}, itemTypes::user);
+        item->setData(0, Qt::UserRole, list.at(var).first);
+        item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+        userItem->addChild(item);
     }
-    userItem->
 }
+
+QTreeWidgetItem *MainWindow::addUserValue(QString key, QVariant val, QTreeWidgetItem *parent)
+{
+    QTreeWidgetItem *item = new QTreeWidgetItem({key, val.toString()}, itemTypes::value);
+    parent->addChild(item);
+    return item;
+}
+
+
+
+
+
+
+
+

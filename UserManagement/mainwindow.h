@@ -20,6 +20,7 @@ public:
     void showAdminTab(bool show);
     void initTree();
 
+    QTreeWidgetItem *addUserValue(QString key, QVariant val, QTreeWidgetItem *parent);
 private:
     Ui::MainWindow *ui;
     int m_admintab = 0;
@@ -29,7 +30,7 @@ private:
     QTreeWidgetItem *permissionItem = new QTreeWidgetItem({"Permissions", ""});
 
 signals:
-
+    void userExpanded(int id, QTreeWidgetItem *item);
 };
 
 #endif // MAINWINDOW_H
