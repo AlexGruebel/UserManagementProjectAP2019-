@@ -41,7 +41,8 @@ CREATE TABLE group_permission_mapping (
 );
 
 create view user_permissions as
-select userid, replace(permission, '{id}', userid) as permission
+/*jpa/spring search for the column user_id not uderId?! */
+select concat(userid,p.permissionid) as uid, userid as user_id, concat(replace(permission, '{id}', userid),'%') as permission
 from user_group_mapping um
 join group_permission_mapping gpm on um.groupid = gpm.groupid
 join permissions p on gpm.permissionid = p.permissionid;
@@ -53,10 +54,9 @@ join permissions p on gpm.permissionid = p.permissionid;
 INSERT INTO user_groups(ugroupname, description)
 VALUES('user', 'default group for every user'), ('admin', 'admin group');
 
-/*default user*/
-
+/*default user PW: admin@123*/
 INSERT INTO users(uuname, pwhash)
-VALUES('root', 'notImplementedYet')
+VALUES('root', '$2a$10$3Sa/c9HA7I9GEAh/vL74xOi9FnyJDxOSjwGvvjEpsoB9X19bBUn1e'), ('user', '$2a$10$3Sa/c9HA7I9GEAh/vL74xOi9FnyJDxOSjwGvvjEpsoB9X19bBUn1e')
 
 /*user group mapping*/
 insert into user_group_mapping
@@ -64,7 +64,7 @@ values(1,2),(2,1);
 
 /*group permission*/
 insert into permissions(upermissionname, permission)
-values('all', '*'), ('SelfUserDetails', '/userdetails/{id}');
+values('all', '%'), ('SelfUserDetail', '/userdetail/{id}');
 
 insert into group_permission_mapping(groupid, permissionid)
 values(1,2),(2,1);
