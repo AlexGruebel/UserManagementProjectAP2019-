@@ -30,7 +30,7 @@ public abstract class BaseController<T, R extends JpaRepository<T, Integer>> ext
         return entity;
     }
 
-    @DeleteMapping
+    @DeleteMapping(value="/{id}")
     public void delete(@PathVariable int id){
         super.getRepository().deleteById(id);
     }
