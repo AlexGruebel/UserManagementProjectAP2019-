@@ -42,4 +42,6 @@ void Controll::initMainWindow(bool admin)
     ui->setWindowTitle("User Administration Tool");
     ui->show();
 
+    ui->initTree();
+
 }

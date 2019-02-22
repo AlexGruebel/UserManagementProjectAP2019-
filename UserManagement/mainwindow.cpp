@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "apisingleton.h"
 
 #include "QDebug"
 
@@ -25,4 +26,19 @@ void MainWindow::showAdminTab(bool show)
     {
         ui->tabWidget->removeTab(m_admintab);
     }
+}
+
+void MainWindow::initTree()
+{
+    ui->treeWidget->addTopLevelItem(userItem);
+    ui->treeWidget->addTopLevelItem(groupItem);
+    ui->treeWidget->addTopLevelItem(permissionItem);
+
+    QList<QPair<int, QString>> list = ApiSingleton::getInstance().userList();
+
+    for (int var = 0; var < list.size(); ++var)
+    {
+        userItem->addChild(new QTreeWidgetItem({QString::number(list.at(var).first), list.at(var).second}));
+    }
+    userItem->
 }

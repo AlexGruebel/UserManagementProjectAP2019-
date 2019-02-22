@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTreeWidgetItem>
 
 namespace Ui
 {
@@ -17,10 +18,15 @@ public:
     virtual ~MainWindow();
 
     void showAdminTab(bool show);
+    void initTree();
 
 private:
     Ui::MainWindow *ui;
     int m_admintab = 0;
+
+    QTreeWidgetItem *userItem = new QTreeWidgetItem({"Users", ""});
+    QTreeWidgetItem *groupItem = new QTreeWidgetItem({"Groups", ""});
+    QTreeWidgetItem *permissionItem = new QTreeWidgetItem({"Permissions", ""});
 
 signals:
 

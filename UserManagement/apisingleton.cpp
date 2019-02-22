@@ -9,6 +9,13 @@ ApiSingleton &ApiSingleton::getInstance()
     return instance;
 }
 
+QList<QPair<int, QString> > ApiSingleton::userList()
+{
+    //DEBUG
+    QList<QPair<int, QString> > list = { {0,"one"}, {1,"two"}, {2,"three"} };
+    return list;
+}
+
 ApiSingleton::ApiSingleton()
 {
     QNetworkAccessManager *restclient; //in class
