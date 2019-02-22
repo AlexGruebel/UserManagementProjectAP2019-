@@ -12,12 +12,14 @@ public:
     static ApiSingleton& getInstance();
 
     QList<QPair<int, QString>> userList();
+    QJsonObject userDetails(int id);
 private:
     ApiSingleton();
     ~ApiSingleton()= default;
     ApiSingleton(const ApiSingleton&)= delete;
     ApiSingleton& operator=(const ApiSingleton&)= delete;
 
+    QJsonObject stringToJsonObject(QString s);
 };
 
 #endif // APISINGLETON_H
