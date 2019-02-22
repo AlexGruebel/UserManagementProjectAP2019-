@@ -4,6 +4,8 @@
 
 #include "QDebug"
 
+#include <QTreeView>
+
 enum itemTypes
 {
     value = 0,
@@ -47,6 +49,10 @@ void MainWindow::initTree()
         if(item->type() == itemTypes::user)
         {
             emit userExpanded(item->data(0, Qt::UserRole).toInt(), item);
+        }
+        for(int i = 0; i < ui->treeWidget->columnCount(); i++)
+        {
+            ui->treeWidget->resizeColumnToContents(i);
         }
     });
 
