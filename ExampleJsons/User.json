@@ -1,0 +1,14 @@
+{
+    "page": 1,
+    "limit": 100,
+    "items": [
+        {
+            "id": 1,
+            "userName": "root"
+        },
+        {
+            "id": 2,
+            "userName": "user"
+        }
+    ]
+}
