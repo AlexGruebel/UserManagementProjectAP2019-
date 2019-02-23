@@ -46,7 +46,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.httpBasic().authenticationEntryPoint(new RestAuthenticationEntryPoint());
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().anyRequest().authenticated().accessDecisionManager(accessDecisionManager());
+        //http.authorizeRequests().anyRequest().authenticated().accessDecisionManager(accessDecisionManager());
+            //.and().antMatcher("/swagger-ui.html#").authorizeRequests().anyRequest().anonymous();
+        http.authorizeRequests().antMatchers("/swagger-ui.html#").permitAll()
+                                .anyRequest().authenticated().accessDecisionManager(accessDecisionManager());
+
+        
     }
 
     @Bean
