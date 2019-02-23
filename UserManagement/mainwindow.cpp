@@ -5,6 +5,7 @@
 #include "QDebug"
 
 #include <QTreeView>
+#include <QMessageBox>
 
 enum itemTypes
 {
@@ -42,6 +43,11 @@ void MainWindow::initTree(QList<QPair<int, QString>> userList)
     ui->treeWidget->addTopLevelItem(groupItem);
     ui->treeWidget->addTopLevelItem(permissionItem);
 
+    ui->treeWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    userItem->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
+    groupItem->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
+    permissionItem->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
+
     connect(
         ui->treeWidget, &QTreeWidget::itemExpanded,
         [=]( QTreeWidgetItem * item )
@@ -56,11 +62,49 @@ void MainWindow::initTree(QList<QPair<int, QString>> userList)
         }
     });
 
+    connect(ui->treeWidget, &QTreeWidget::itemDoubleClicked,
+            [=](QTreeWidgetItem *item, int column)
+    {
+        if(isColumnEditable(column))
+        {
+            if(item->text(0).toLower() == "id")
+            {
+                QMessageBox msgBox;
+                msgBox.setText("ID is not editable!");
+                msgBox.exec();
+            }
+            else if (item->childCount() > 0)
+            {
+                //No parent editing
+            }
+            else if (item->type() == itemTypes::value)
+            {
+                ui->treeWidget->editItem(item, column);
+            }
+        }
+    });
+
+    connect(ui->treeWidget, &QTreeWidget::itemChanged,
+            [=](QTreeWidgetItem *item, int column)
+    {
+        qDebug() << "item edited";
+        QTreeWidgetItem *superParent = item;
+        while(superParent->parent() != Q_NULLPTR && superParent->type() != itemTypes::user)
+        {
+            superParent = superParent->parent();
+        }
+        emit userEdited(superParent->data(0, Qt::UserRole).toInt(), superParent);
+    });
+
     for (int var = 0; var < userList.size(); ++var)
     {
+        //item with id and userName (problem, what happens on editing id or userName)
         QTreeWidgetItem *item = new QTreeWidgetItem({QString::number(userList.at(var).first), userList.at(var).second}, itemTypes::user);
+        //item without id and userName
+//        QTreeWidgetItem *item = new QTreeWidgetItem({"User"}, itemTypes::user);
         item->setData(0, Qt::UserRole, userList.at(var).first);
         item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+        item->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
         userItem->addChild(item);
     }
 }
@@ -68,6 +112,7 @@ void MainWindow::initTree(QList<QPair<int, QString>> userList)
 QTreeWidgetItem *MainWindow::addUserValue(QString key, QVariant val, QTreeWidgetItem *parent)
 {
     QTreeWidgetItem *item = new QTreeWidgetItem({key, val.toString()}, itemTypes::value);
+    item->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
     parent->addChild(item);
     return item;
 }
@@ -82,7 +127,16 @@ QTreeWidgetItem *MainWindow::getUserItem()
     return userItem;
 }
 
-
+bool MainWindow::isColumnEditable(int column)
+{
+    switch (column)
+    {
+    case 0:
+        return false;
+    default:
+        return true;
+    }
+}
 
 
 

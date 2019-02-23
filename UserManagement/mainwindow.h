@@ -31,8 +31,11 @@ private:
     QTreeWidgetItem *userItem = new QTreeWidgetItem({"Users", ""});
     QTreeWidgetItem *groupItem = new QTreeWidgetItem({"Groups", ""});
     QTreeWidgetItem *permissionItem = new QTreeWidgetItem({"Permissions", ""});
+    void onTreeWidgetItemDoubleClicked(QTreeWidgetItem *item, int column);
+    bool isColumnEditable(int column);
 signals:
     void userExpanded(int id, QTreeWidgetItem *item);
+    void userEdited(int id, QTreeWidgetItem *root);
 };
 
 #endif // MAINWINDOW_H

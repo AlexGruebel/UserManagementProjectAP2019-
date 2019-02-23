@@ -52,6 +52,9 @@ QTreeView::branch:open:has-children:has-siblings  {
         image: url(:/resources/stylesheet-branch-open.png);
 }</string>
           </property>
+          <property name="expandsOnDoubleClick">
+           <bool>false</bool>
+          </property>
           <property name="columnCount">
            <number>2</number>
           </property>

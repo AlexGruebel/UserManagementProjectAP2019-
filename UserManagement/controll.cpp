@@ -56,6 +56,13 @@ void Controll::initMainWindow(bool admin)
         QJsonObject json = m_api->userDetails(id);
         JsonTree(json, root);
     });
+
+    connect(
+        ui, &MainWindow::userEdited,
+        [=]( int id, QTreeWidgetItem *root )
+    {
+
+    });
 }
 
 void Controll::JsonTree(QJsonObject jsonRoot, QTreeWidgetItem *treeRoot)
@@ -130,6 +137,48 @@ QList<QPair<int, QString>> Controll::jsonToUsers(QJsonObject jsonRoot)
     return outputList;
 }
 
+//QJsonDocument Controll::toJson()
+//{
+
+//    auto v = genJson(mRootItem);
+//    QJsonDocument doc;
+
+//    if (v.isObject()) {
+//        doc = QJsonDocument(v.toObject());
+//    } else {
+//        doc = QJsonDocument(v.toArray());
+//    }
+
+//    return doc;
+//}
+
+//QJsonValue  Controll::generateJson(QTreeWidgetItem *item)
+//{
+//    int  children = item->childCount();
+
+//    if(children == 0)
+//    {
+
+//    }
+//    if (QJsonValue::Object == type) {
+//        QJsonObject jo;
+//        for (int i = 0; i < nchild; ++i) {
+//            auto ch = item->child(i);
+//            auto key = ch->key();
+//            jo.insert(key, genJson(ch));
+//        }
+//        return  jo;
+//    } else if (QJsonValue::Array == type) {
+//        QJsonArray arr;
+//        for (int i = 0; i < nchild; ++i) {
+//            auto ch = item->child(i);
+//            arr.append(genJson(ch));
+//        }
+//        return arr;
+//    } else {
+//        QJsonValue va(item->value());
+//        return va;
+//}
 
 
 

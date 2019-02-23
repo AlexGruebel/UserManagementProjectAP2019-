@@ -22,6 +22,8 @@ private:
     void recursiveJsonObject(QJsonObject obj, QTreeWidgetItem *i);
     void recursiveJsonArray(QJsonArray array, QTreeWidgetItem *i);
     QList<QPair<int, QString>> jsonToUsers(QJsonObject jsonRoot);
+    QJsonDocument toJson();
+    QJsonValue generateJson(QTreeWidgetItem *item);
 private slots:
     void initMainWindow(bool admin = false);
 };
