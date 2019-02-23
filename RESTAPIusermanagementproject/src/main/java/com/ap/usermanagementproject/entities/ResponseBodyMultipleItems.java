@@ -12,9 +12,10 @@ public class ResponseBodyMultipleItems<T> {
     private short limit;
     private List<T> items;
 
-    public ResponseBodyMultipleItems(int page, short limit){
+    public ResponseBodyMultipleItems(int page, short limit, List<T> items){
         setPage(page);
         setLimit(limit);
+        setItems(items);
     }
 
     /**

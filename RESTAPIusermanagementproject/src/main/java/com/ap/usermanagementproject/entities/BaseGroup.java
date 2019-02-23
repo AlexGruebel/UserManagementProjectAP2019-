@@ -1,13 +1,19 @@
 package com.ap.usermanagementproject.entities;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 @MappedSuperclass
-public class BaseGroup {
+@DynamicUpdate
+public abstract class BaseGroup implements IEntity {
     
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="groupid")
     private int id;
 
@@ -40,5 +46,13 @@ public class BaseGroup {
      */
     public String getGroupname() {
         return groupname;
+    }
+
+    public IEntity merge(IEntity entity){
+        BaseGroup ngroup = (BaseGroup) entity;
+        if(ngroup.getGroupname() != null){
+            this.setGroupname(ngroup.getGroupname());
+        }
+        return ngroup;
     }
 }

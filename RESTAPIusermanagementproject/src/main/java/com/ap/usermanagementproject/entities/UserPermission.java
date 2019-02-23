@@ -10,7 +10,7 @@ import org.hibernate.annotations.Immutable;
 @Entity
 @Immutable
 @Table(name="user_permissions")
-public class UserPermission {
+public class UserPermission implements IEntity{
     @Id
     private int uid;
     @Column(name="userId")
@@ -57,5 +57,9 @@ public class UserPermission {
      */
     public void setPermission(String permission) {
         this.permission = permission;
+    }
+
+    public IEntity merge(IEntity entity){
+        return this;
     }
 }

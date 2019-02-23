@@ -4,22 +4,33 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.aspectj.lang.annotation.DeclareError;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 @Entity
 @Table(name = "users")
 public class UserDetail extends BaseUser {
-
+    @JsonIgnore
     private String pwhash;
     private String mail;
 
     @ManyToMany
-    @JoinTable(name = "user_group_mapping"
-              ,joinColumns = @JoinColumn(name = "userid")
-              ,inverseJoinColumns = @JoinColumn(name = "groupid"))
+    @JoinTable(name = "user_group_mapping", joinColumns = @JoinColumn(name = "userid"), inverseJoinColumns = @JoinColumn(name = "groupid"))
     private Set<Group> groups = new HashSet<Group>();
 
     /**
@@ -61,5 +72,34 @@ public class UserDetail extends BaseUser {
      */
     public Set<Group> getGroups() {
         return groups;
+    }
+
+    @Override
+    public Object clone(){
+        UserDetail clone = new UserDetail();
+        clone.setId(getId());
+        clone.setUserName(getUserName());
+        clone.setMail(getMail());
+        clone.setPwhash(getPwhash());
+        clone.setGroups(getGroups());
+        return clone;
+    }
+
+    @Override
+    public IEntity merge(IEntity entity){
+        UserDetail nUserDetail = (UserDetail) entity;
+
+        if(nUserDetail.getGroups().size() != 0){
+            this.setGroups(nUserDetail.getGroups());
+        }
+
+        if(nUserDetail.getMail() != null){
+            this.setMail(nUserDetail.getMail());
+        }
+
+        if(nUserDetail.getPwhash() != null){
+            this.setPwhash(nUserDetail.getPwhash());
+        }
+        return this;
     }
 }

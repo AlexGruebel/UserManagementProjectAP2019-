@@ -1,13 +1,20 @@
 package com.ap.usermanagementproject.entities;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 @Entity
+@DynamicUpdate
 @Table(name="permissions")
-public class Permission{
+public class Permission implements IEntity{
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="permissionid")
     private int id;
     @Column(name="upermissionname")
@@ -56,5 +63,17 @@ public class Permission{
         this.permission = permission;
     }
 
-    
+    public IEntity merge(IEntity entity){
+        Permission npermission = (Permission) entity;
+
+        if(npermission.getPermission() != null){
+            this.setPermission(npermission.getPermission());
+        }
+
+        if(npermission.getPermissionName() != null){
+            this.setPermissionName(npermission.getPermissionName());
+        }
+
+        return this;
+    }    
 }

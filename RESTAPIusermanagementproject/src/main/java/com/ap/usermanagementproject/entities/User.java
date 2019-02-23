@@ -8,4 +8,9 @@ import org.hibernate.annotations.Immutable;
 @Entity
 @Immutable
 @Table(name="users")
-public class User extends BaseUser {}
+public class User extends BaseUser {
+
+    @Override
+    public IEntity merge(IEntity old) {
+        return this;
+    }}

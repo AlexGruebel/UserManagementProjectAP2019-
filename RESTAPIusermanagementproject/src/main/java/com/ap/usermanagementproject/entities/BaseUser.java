@@ -1,13 +1,19 @@
 package com.ap.usermanagementproject.entities;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
+import org.hibernate.annotations.DynamicUpdate;
 @MappedSuperclass
-public class BaseUser{
+@DynamicUpdate
+public abstract class BaseUser implements IEntity{
 
     @Id
     @Column(name="userid")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     @Column(name="uuname")

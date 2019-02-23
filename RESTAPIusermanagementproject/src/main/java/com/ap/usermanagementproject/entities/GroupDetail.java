@@ -48,4 +48,14 @@ public class GroupDetail extends BaseGroup {
     public void setPermissions(Set<Permission> permissions) {
         this.permissions = permissions;
     }
+
+    @Override
+    public IEntity merge(IEntity entity){
+        GroupDetail ngroup =  (GroupDetail) super.merge(entity);
+
+        if(ngroup.getDescription() != null){
+            this.setDescription(ngroup.getDescription());
+        }
+        return this;
+    }
 }
