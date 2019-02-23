@@ -13,6 +13,7 @@ public:
 
     QJsonObject userList();
     QJsonObject userDetails(int id);
+    void sendUserDetails(int id, QJsonDocument doc);
 private:
     ApiSingleton();
     ~ApiSingleton()= default;
