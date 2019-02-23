@@ -77,6 +77,17 @@ QJsonObject ApiSingleton::stringToJsonObject(QString s)
     return obj;
 }
 
+void ApiSingleton::sendUserDetails(int id, QJsonDocument doc)
+{
+    QString strJson(doc.toJson(QJsonDocument::Indented));
+    QFile f("F:\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\json_output.json");
+    if (f.open(QFile::WriteOnly | QFile::Text))
+    {
+        QTextStream out(&f);
+        out << strJson;
+    }
+}
+
 
 
 
