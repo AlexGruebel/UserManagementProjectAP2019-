@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
-@RequestMapping("/groupdetail")
+@RequestMapping("/api/groupdetail")
 public class GroupDetailController extends BaseController<GroupDetail, GroupDetailRepository, GroupDetailCRUDService>{}

@@ -7,5 +7,5 @@ import com.ap.usermanagementproject.services.UserRService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController extends BaseGetController<User, UserRepository, UserRService>{}

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/userdetail")
+@RequestMapping("/api/userdetail")
 public class UserDetailController extends ExtBaseController<UserDetail
                                                         ,UserDetailWithPWEntity
                                                         ,UserDetailRepository

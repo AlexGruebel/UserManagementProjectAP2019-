@@ -7,5 +7,5 @@ import com.ap.usermanagementproject.services.GroupRService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/group")
+@RequestMapping("/api/group")
 public class GroupController extends BaseGetController<Group, GroupRepository, GroupRService>{}
