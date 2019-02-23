@@ -18,7 +18,7 @@ LoginWindow::~LoginWindow()
 
 void LoginWindow::login()
 {
-    qDebug() << "Login Pressed";
+//    qDebug() << "Login Pressed";
     //insert access to rest api
 
     emit loggedIn(true);

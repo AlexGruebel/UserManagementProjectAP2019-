@@ -34,3 +34,10 @@ hs_err_pid*
 .settings
 .springBeans
 .sts4-cache
+
+#exclude builds
+build-UserManagement-*
+#exclude pro.user
+
+
+/UserManagement/UserManagement.pro.user
