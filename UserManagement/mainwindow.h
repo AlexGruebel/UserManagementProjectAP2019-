@@ -18,9 +18,12 @@ public:
     virtual ~MainWindow();
 
     void showAdminTab(bool show);
-    void initTree();
+    void initTree(QList<QPair<int, QString> > userList);
 
     QTreeWidgetItem *addUserValue(QString key, QVariant val, QTreeWidgetItem *parent);
+    QTreeWidgetItem *getUserItem() const;
+    QTreeWidgetItem *getUserItem();
+
 private:
     Ui::MainWindow *ui;
     int m_admintab = 0;
@@ -28,7 +31,6 @@ private:
     QTreeWidgetItem *userItem = new QTreeWidgetItem({"Users", ""});
     QTreeWidgetItem *groupItem = new QTreeWidgetItem({"Groups", ""});
     QTreeWidgetItem *permissionItem = new QTreeWidgetItem({"Permissions", ""});
-
 signals:
     void userExpanded(int id, QTreeWidgetItem *item);
 };

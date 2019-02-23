@@ -36,7 +36,7 @@ void MainWindow::showAdminTab(bool show)
     }
 }
 
-void MainWindow::initTree()
+void MainWindow::initTree(QList<QPair<int, QString>> userList)
 {
     ui->treeWidget->addTopLevelItem(userItem);
     ui->treeWidget->addTopLevelItem(groupItem);
@@ -56,12 +56,10 @@ void MainWindow::initTree()
         }
     });
 
-    QList<QPair<int, QString>> list = ApiSingleton::getInstance().userList();
-
-    for (int var = 0; var < list.size(); ++var)
+    for (int var = 0; var < userList.size(); ++var)
     {
-        QTreeWidgetItem *item = new QTreeWidgetItem({QString::number(list.at(var).first), list.at(var).second}, itemTypes::user);
-        item->setData(0, Qt::UserRole, list.at(var).first);
+        QTreeWidgetItem *item = new QTreeWidgetItem({QString::number(userList.at(var).first), userList.at(var).second}, itemTypes::user);
+        item->setData(0, Qt::UserRole, userList.at(var).first);
         item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
         userItem->addChild(item);
     }
@@ -72,6 +70,16 @@ QTreeWidgetItem *MainWindow::addUserValue(QString key, QVariant val, QTreeWidget
     QTreeWidgetItem *item = new QTreeWidgetItem({key, val.toString()}, itemTypes::value);
     parent->addChild(item);
     return item;
+}
+
+QTreeWidgetItem *MainWindow::getUserItem() const
+{
+    return userItem;
+}
+
+QTreeWidgetItem *MainWindow::getUserItem()
+{
+    return userItem;
 }
 
 

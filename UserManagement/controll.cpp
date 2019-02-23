@@ -47,7 +47,7 @@ void Controll::initMainWindow(bool admin)
     ui->setWindowTitle("User Administration Tool");
     ui->show();
 
-    ui->initTree();
+    ui->initTree(jsonToUsers(m_api->userList()));
 
     connect(
         ui, &MainWindow::userExpanded,
@@ -110,6 +110,25 @@ void Controll::recursiveJsonArray(QJsonArray array, QTreeWidgetItem *i)
     }
 }
 
+QList<QPair<int, QString>> Controll::jsonToUsers(QJsonObject jsonRoot)
+{
+    QJsonArray array = jsonRoot.value("items").toArray();
+    QList<QPair<int, QString>> outputList;
+    foreach (QJsonValue val, array)
+    {
+        if(val.isObject())
+        {
+            QPair<int, QString> pair(val.toObject().value("id").toInt(-1),
+                                     val.toObject().value("userName").toString("NO NAME"));
+            outputList.append(pair);
+        }
+        else
+        {
+            qCritical() << "Invalid User List";
+        }
+    }
+    return outputList;
+}
 
 
 
