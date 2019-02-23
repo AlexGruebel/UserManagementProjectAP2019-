@@ -21,15 +21,26 @@ ApiSingleton::ApiSingleton()
 //    qDebug() << reply->readAll();
 }
 
-QList<QPair<int, QString> > ApiSingleton::userList()
+QJsonObject ApiSingleton::userList()
 {
     //DEBUG
-    QList<QPair<int, QString> > list = { {0,"one"}, {1,"two"}, {2,"three"} };
-    return list;
+//    QList<QPair<int, QString> > list = { {0,"one"}, {1,"two"}, {2,"three"} };
+//    return list;
+    qDebug() << "Receive Userlist";
+    QString data;
+
+    QFile f("F:\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\user.json");
+    if (f.open(QFile::ReadOnly | QFile::Text))
+    {
+        QTextStream in(&f);
+        data = in.readAll();
+    }
+    return stringToJsonObject(data);
 }
 
 QJsonObject ApiSingleton::userDetails(int id)
 {
+    qDebug() << "Receive Userdetails";
     QString data;
 
     QFile f("F:\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\userdetails_only1.json");

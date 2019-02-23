@@ -11,7 +11,7 @@ class ApiSingleton : public QObject
 public:
     static ApiSingleton& getInstance();
 
-    QList<QPair<int, QString>> userList();
+    QJsonObject userList();
     QJsonObject userDetails(int id);
 private:
     ApiSingleton();
