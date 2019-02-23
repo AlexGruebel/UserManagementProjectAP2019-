@@ -18,12 +18,14 @@ private:
     MainWindow *ui;
     ApiSingleton *m_api;
 
-    void JsonTree(QJsonObject jsonRoot, QTreeWidgetItem *treeRoot);
-    void recursiveJsonObject(QJsonObject obj, QTreeWidgetItem *i);
-    void recursiveJsonArray(QJsonArray array, QTreeWidgetItem *i);
+    void itemsFromJson(QJsonValue jsonRoot, QTreeWidgetItem *treeRoot);
+    QTreeWidgetItem* recursiveJsonToTree(const QJsonValue &value, QTreeWidgetItem* parent);
+
     QList<QPair<int, QString>> jsonToUsers(QJsonObject jsonRoot);
-    QJsonDocument toJson();
-    QJsonValue generateJson(QTreeWidgetItem *item);
+
+    QJsonDocument toJson(QTreeWidgetItem *root);
+    QJsonValue recursiveTreeToJson(QTreeWidgetItem *item);
+
 private slots:
     void initMainWindow(bool admin = false);
 };
