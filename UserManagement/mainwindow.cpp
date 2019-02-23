@@ -109,13 +109,13 @@ void MainWindow::initTree(QList<QPair<int, QString>> userList)
     }
 }
 
-QTreeWidgetItem *MainWindow::addUserValue(QString key, QVariant val, QTreeWidgetItem *parent)
-{
-    QTreeWidgetItem *item = new QTreeWidgetItem({key, val.toString()}, itemTypes::value);
-    item->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
-    parent->addChild(item);
-    return item;
-}
+//QTreeWidgetItem *MainWindow::addUserValue(QString key, QVariant val, QTreeWidgetItem *parent)
+//{
+//    QTreeWidgetItem *item = new QTreeWidgetItem({key, val.toString()}, itemTypes::value);
+//    item->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
+//    parent->addChild(item);
+//    return item;
+//}
 
 QTreeWidgetItem *MainWindow::getUserItem() const
 {
@@ -125,6 +125,11 @@ QTreeWidgetItem *MainWindow::getUserItem() const
 QTreeWidgetItem *MainWindow::getUserItem()
 {
     return userItem;
+}
+
+void MainWindow::blockTreeWidgetSignal(bool val)
+{
+    ui->treeWidget->blockSignals(val);
 }
 
 bool MainWindow::isColumnEditable(int column)

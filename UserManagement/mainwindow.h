@@ -24,6 +24,8 @@ public:
     QTreeWidgetItem *getUserItem() const;
     QTreeWidgetItem *getUserItem();
 
+    void blockTreeWidgetSignal(bool val);
+
 private:
     Ui::MainWindow *ui;
     int m_admintab = 0;
