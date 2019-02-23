@@ -57,7 +57,7 @@ QTreeView::branch:open:has-children:has-siblings  {
           </property>
           <column>
            <property name="text">
-            <string>Name</string>
+            <string>Key</string>
            </property>
           </column>
           <column>
