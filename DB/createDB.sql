@@ -47,6 +47,14 @@ from user_group_mapping um
 join group_permission_mapping gpm on um.groupid = gpm.groupid
 join permissions p on gpm.permissionid = p.permissionid;
 
+/*create service user*/
+
+drop user if exists 'restService'@'%';
+create user 'restService'@'%' IDENTIFIED BY 'my-secret-pw';
+
+GRANT ALL PRIVILEGES  ON UserManagementProject.* to 'restService'@'%';
+
+
 /*default data*/
 
 /*standart groups*/
@@ -56,7 +64,7 @@ VALUES('user', 'default group for every user'), ('admin', 'admin group');
 
 /*default user PW: admin@123*/
 INSERT INTO users(uuname, pwhash)
-VALUES('root', '$2a$10$3Sa/c9HA7I9GEAh/vL74xOi9FnyJDxOSjwGvvjEpsoB9X19bBUn1e'), ('user', '$2a$10$3Sa/c9HA7I9GEAh/vL74xOi9FnyJDxOSjwGvvjEpsoB9X19bBUn1e')
+VALUES('root', '$2a$10$3Sa/c9HA7I9GEAh/vL74xOi9FnyJDxOSjwGvvjEpsoB9X19bBUn1e'), ('user', '$2a$10$3Sa/c9HA7I9GEAh/vL74xOi9FnyJDxOSjwGvvjEpsoB9X19bBUn1e');
 
 /*user group mapping*/
 insert into user_group_mapping
