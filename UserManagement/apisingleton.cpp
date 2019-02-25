@@ -4,8 +4,9 @@
 #include <QJsonValue>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <memory>
 
-static const QString url = "localhost";
+static const QString URL = "http://localhost:8080/api";
 
 ApiSingleton &ApiSingleton::getInstance()
 {
@@ -15,27 +16,52 @@ ApiSingleton &ApiSingleton::getInstance()
 
 ApiSingleton::ApiSingleton()
 {
-    QNetworkAccessManager *restclient; //in class
-    restclient = new QNetworkAccessManager(this); //constructor
-//    QNetworkReply *reply = restclient->post(request,payload);
-//    qDebug() << reply->readAll();
+    m_restClient = new QNetworkAccessManager(this); //constructor
+
+//    connect(
+//        m_restClient, &QNetworkAccessManager::finished,
+//        [=]( QNetworkReply* reply )
+//    {
+//        qDebug() << reply->readAll();
+//    });
 }
 
-QJsonObject ApiSingleton::userList()
+void ApiSingleton::userList()
 {
-    //DEBUG
-//    QList<QPair<int, QString> > list = { {0,"one"}, {1,"two"}, {2,"three"} };
-//    return list;
-    qDebug() << "Receive Userlist";
-    QString data;
+    QNetworkRequest request;
+    request.setUrl(QUrl(URL+"/user"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    QFile f("F:\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\user.json");
-    if (f.open(QFile::ReadOnly | QFile::Text))
+    QString concatenated = "root:admin@123"; //username:password
+    QByteArray data = concatenated.toLocal8Bit().toBase64();
+    QString headerData = "Basic " + data;
+
+    request.setRawHeader("Authorization", headerData.toLocal8Bit());
+    QNetworkReply *reply=m_restClient->get(request);
+
+    connect(
+        reply, &QNetworkReply::finished,
+        [=]( )
     {
-        QTextStream in(&f);
-        data = in.readAll();
-    }
-    return stringToJsonObject(data);
+//        qDebug() << reply->readAll();
+        emit userListReceived(stringToJsonObject(reply->readAll()));
+        reply->deleteLater();
+    });
+
+
+//    //DEBUG
+////    QList<QPair<int, QString> > list = { {0,"one"}, {1,"two"}, {2,"three"} };
+////    return list;
+//    qDebug() << "Receive Userlist";
+//    QString data;
+
+//    QFile f("C:\\Users\\Adrian-Laptop\\Documents\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\user.json");
+//    if (f.open(QFile::ReadOnly | QFile::Text))
+//    {
+//        QTextStream in(&f);
+//        data = in.readAll();
+//    }
+//    return stringToJsonObject(data);
 }
 
 QJsonObject ApiSingleton::userDetails(int id)
@@ -43,7 +69,7 @@ QJsonObject ApiSingleton::userDetails(int id)
     qDebug() << "Receive Userdetails";
     QString data;
 
-    QFile f("F:\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\userdetails_only1.json");
+    QFile f("C:\\Users\\Adrian-Laptop\\Documents\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\userdetails_only1.json");
     if (f.open(QFile::ReadOnly | QFile::Text))
     {
         QTextStream in(&f);
@@ -80,7 +106,7 @@ QJsonObject ApiSingleton::stringToJsonObject(QString s)
 void ApiSingleton::sendUserDetails(int id, QJsonDocument doc)
 {
     QString strJson(doc.toJson(QJsonDocument::Indented));
-    QFile f("F:\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\json_output.json");
+    QFile f("C:\\Users\\Adrian-Laptop\\Documents\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\json_output.json");
     if (f.open(QFile::WriteOnly | QFile::Text))
     {
         QTextStream out(&f);

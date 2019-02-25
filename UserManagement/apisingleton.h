@@ -4,6 +4,10 @@
 #include <QObject>
 #include <QList>
 #include <QPair>
+#include <QJsonObject>
+
+#include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkAccessManager>
 
 class ApiSingleton : public QObject
 {
@@ -11,7 +15,7 @@ class ApiSingleton : public QObject
 public:
     static ApiSingleton& getInstance();
 
-    QJsonObject userList();
+    void userList();
     QJsonObject userDetails(int id);
     void sendUserDetails(int id, QJsonDocument doc);
 private:
@@ -21,6 +25,11 @@ private:
     ApiSingleton& operator=(const ApiSingleton&)= delete;
 
     QJsonObject stringToJsonObject(QString s);
+
+    QNetworkAccessManager *m_restClient;
+
+signals:
+    void userListReceived(QJsonObject list);
 };
 
 #endif // APISINGLETON_H
