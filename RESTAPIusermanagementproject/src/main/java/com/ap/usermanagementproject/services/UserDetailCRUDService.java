@@ -34,7 +34,9 @@ public class UserDetailCRUDService extends BaseCRUDService<UserDetail, UserDetai
 
     private UserDetail castEntityAndSetPW(UserDetail entity){
         String pw = ((UserDetailWithPWEntity) entity).getPassword();
-        entity.setPwhash(encoder.encode(pw)); 
+        if(pw != null){
+            entity.setPwhash(encoder.encode(pw)); 
+        }
         return entity;
     }
 }
