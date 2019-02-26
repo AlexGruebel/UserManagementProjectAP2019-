@@ -1,20 +1,21 @@
 package com.ap.usermanagementproject.entities;
 
 import java.util.Collection;
+import java.util.stream.Stream;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserPrincipal implements UserDetails {
-    private UserDetail user;
+    private UserSecurityEntity user;
 
-    public UserPrincipal(UserDetail user) {
+    public UserPrincipal(UserSecurityEntity user) {
         this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.user.getUserPermissions();
     }
 
     public int getId(){
