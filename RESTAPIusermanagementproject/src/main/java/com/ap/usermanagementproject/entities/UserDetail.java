@@ -4,24 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import org.aspectj.lang.annotation.DeclareError;
-import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 @Entity
 @Table(name = "users")
 public class UserDetail extends BaseUser {
