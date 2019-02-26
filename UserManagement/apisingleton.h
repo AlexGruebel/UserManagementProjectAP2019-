@@ -36,6 +36,7 @@ private:
 signals:
     void userListReceived(QJsonObject list);
     void userDetailsReceived(int id, QJsonObject details);
+    void loginReceived(int status);
 };
 
 #endif // APISINGLETON_H

@@ -18,7 +18,7 @@ public:
 
 private:
     Ui::LoginWindow *ui;
-    void login();
+    void login(int status);
 
 signals:
     void loggedIn(bool admin);

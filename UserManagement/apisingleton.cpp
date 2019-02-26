@@ -18,7 +18,7 @@ void ApiSingleton::login(QString user, QString pw)
 {
     // "root:admin@123"
     QNetworkRequest request;
-    request.setUrl(QUrl(URL+"/userdetail/loggin/"+user));
+    request.setUrl(QUrl(URL+"/userdetail/isAdmin/"+user));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QString concatenated = createPWString(user, pw); //username:password
@@ -28,13 +28,29 @@ void ApiSingleton::login(QString user, QString pw)
     request.setRawHeader("Authorization", headerData.toLocal8Bit());
     QNetworkReply *reply=m_restClient->get(request);
 
+    m_user = user;
+    m_pw = pw;
+
     connect(
         reply, &QNetworkReply::finished,
         [=]( )
     {
-        qDebug() << reply->readAll();
+        QString tmp= reply->readAll();
+        if(tmp.toLower() == "false")
+        {
+            emit loginReceived(1);
+        }
+        else if(tmp.toLower() == "true")
+        {
+            emit loginReceived(2);
+        }
+        else
+        {
+            emit loginReceived(0);
+        }
     });
 }
+
 
 ApiSingleton::ApiSingleton()
 {
