@@ -40,8 +40,9 @@ void MainWindow::showAdminTab(bool show)
 void MainWindow::initTree(QList<QPair<int, QString>> userList)
 {
     ui->treeWidget->addTopLevelItem(userItem);
-    ui->treeWidget->addTopLevelItem(groupItem);
-    ui->treeWidget->addTopLevelItem(permissionItem);
+    //Not enough time to implement group and permission editing
+//    ui->treeWidget->addTopLevelItem(groupItem);
+//    ui->treeWidget->addTopLevelItem(permissionItem);
 
     ui->treeWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     userItem->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
@@ -54,7 +55,8 @@ void MainWindow::initTree(QList<QPair<int, QString>> userList)
     {
         if(item->type() == itemTypes::user)
         {
-            emit userExpanded(item->data(0, Qt::UserRole).toInt(), item);
+            foreach(auto i, item->takeChildren()) delete i;
+            emit userExpanded(item->data(0, Qt::UserRole).toInt());
         }
         for(int i = 0; i < ui->treeWidget->columnCount(); i++)
         {
@@ -93,7 +95,7 @@ void MainWindow::initTree(QList<QPair<int, QString>> userList)
         {
             superParent = superParent->parent();
         }
-        emit userEdited(superParent->data(0, Qt::UserRole).toInt(), superParent);
+        emit userEdited(superParent->data(0, Qt::UserRole).toInt(), superParent->child(0));
     });
 
     for (int var = 0; var < userList.size(); ++var)
@@ -132,6 +134,20 @@ void MainWindow::blockTreeWidgetSignal(bool val)
     ui->treeWidget->blockSignals(val);
 }
 
+QTreeWidgetItem *MainWindow::getTreeItemFromId(int id)
+{
+    for (int i = 0; i < userItem->childCount(); ++i)
+    {
+        QTreeWidgetItem *child = userItem->child(i);
+        if(child->data(0, Qt::UserRole) == id)
+        {
+            return child;
+        }
+
+    }
+    return Q_NULLPTR;
+}
+
 bool MainWindow::isColumnEditable(int column)
 {
     switch (column)
@@ -142,8 +158,6 @@ bool MainWindow::isColumnEditable(int column)
         return true;
     }
 }
-
-
 
 
 

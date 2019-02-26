@@ -57,11 +57,17 @@ void Controll::initMainWindow(bool admin)
     m_api->userList();
 
     connect(
-        ui, &MainWindow::userExpanded,
-        [=]( int id, QTreeWidgetItem *root )
+        m_api, &ApiSingleton::userDetailsReceived,
+        [=]( int id, QJsonObject obj )
     {
-        QJsonObject json = m_api->userDetails(id);
-        itemsFromJson(json, root);
+        detailsFromJson(obj, ui->getTreeItemFromId(id));
+    });
+
+    connect(
+        ui, &MainWindow::userExpanded,
+        [=]( int id)
+    {
+        m_api->userDetails(id);
     });
 
     connect(
@@ -74,11 +80,10 @@ void Controll::initMainWindow(bool admin)
     });
 }
 
-void Controll::itemsFromJson(QJsonValue jsonRoot, QTreeWidgetItem *treeRoot)
+void Controll::detailsFromJson(QJsonValue jsonRoot, QTreeWidgetItem *treeRoot)
 {
-    QJsonArray array = jsonRoot.toObject().value("items").toArray();
     ui->blockTreeWidgetSignal(true);
-    treeRoot->addChild(recursiveJsonToTree(array.at(0), treeRoot));
+    treeRoot->addChild(recursiveJsonToTree(jsonRoot, treeRoot));
     ui->blockTreeWidgetSignal(false);
 
     //Debug
