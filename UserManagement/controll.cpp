@@ -47,7 +47,14 @@ void Controll::initMainWindow(bool admin)
     ui->setWindowTitle("User Administration Tool");
     ui->show();
 
-    ui->initTree(jsonToUsers(m_api->userList()));
+    connect(
+        m_api, &ApiSingleton::userListReceived,
+        [=]( QJsonObject obj )
+    {
+        ui->initTree(jsonToUsers(obj));
+    });
+
+    m_api->userList();
 
     connect(
         ui, &MainWindow::userExpanded,
