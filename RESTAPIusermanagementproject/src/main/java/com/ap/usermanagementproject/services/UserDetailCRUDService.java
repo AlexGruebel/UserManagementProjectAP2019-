@@ -1,5 +1,8 @@
 package com.ap.usermanagementproject.services;
 
+import java.util.Set;
+
+import com.ap.usermanagementproject.entities.Group;
 import com.ap.usermanagementproject.entities.IEntity;
 import com.ap.usermanagementproject.entities.UserDetail;
 import com.ap.usermanagementproject.entities.UserDetailWithPWEntity;
@@ -38,5 +41,15 @@ public class UserDetailCRUDService extends BaseCRUDService<UserDetail, UserDetai
             entity.setPwhash(encoder.encode(pw)); 
         }
         return entity;
+    }
+
+    public UserDetail findEntityByName(String name){
+        return super.getRepository().findByUserName(name);
+    }
+
+    public boolean isAdmin(String username){
+        Set<Group> groups = this.findEntityByName(username).getGroups();
+        System.out.println(groups.toArray()[0]);
+        return groups.stream().filter(e -> e.getGroupname().equals("admin")).findFirst().isPresent();
     }
 }
