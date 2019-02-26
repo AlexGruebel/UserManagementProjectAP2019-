@@ -1,19 +1,11 @@
 package com.ap.usermanagementproject.configuration;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.ap.usermanagementproject.repositories.UserPermissionRepository;
 import com.ap.usermanagementproject.services.UMUserDetailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.access.AccessDecisionVoter;
-import org.springframework.security.access.vote.AuthenticatedVoter;
-import org.springframework.security.access.vote.RoleVoter;
-import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,9 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.expression.WebExpressionVoter;
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
    
     private UMUserDetailService userDetailService;
@@ -46,27 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.httpBasic().authenticationEntryPoint(new RestAuthenticationEntryPoint());
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        //http.authorizeRequests().anyRequest().authenticated().accessDecisionManager(accessDecisionManager());
-            //.and().antMatcher("/swagger-ui.html#").authorizeRequests().anyRequest().anonymous();
-        http.authorizeRequests().antMatchers("/api/*").authenticated().accessDecisionManager(accessDecisionManager());
-
-        
+        http.authorizeRequests().antMatchers("/api/*").authenticated();
     }
 
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
-
-    
-    public AccessDecisionManager accessDecisionManager() {
-        List<AccessDecisionVoter<? extends Object>> decisionVoters 
-          = Arrays.asList(
-            new WebExpressionVoter(),
-            new RoleVoter(),
-            new AuthenticatedVoter(),
-            new AccessDecisionRoleVoter(userPermissionRepository));
-        return new UnanimousBased(decisionVoters);
-    }
-
 }
