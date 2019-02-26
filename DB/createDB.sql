@@ -28,6 +28,8 @@ CREATE TABLE user_group_mapping(
   PRIMARY KEY(userid, groupid)
 );
 
+alter table user_group_mapping add foreign key (userid) references users (userID);
+
 CREATE TABLE permissions (
   permissionid int PRIMARY KEY auto_increment,
   upermissionname varchar(255) unique,
@@ -40,9 +42,8 @@ CREATE TABLE group_permission_mapping (
   PRIMARY KEY (groupid, permissionid)
 );
 
-create view user_permissions as
-/*jpa/spring search for the column user_id not uderId?! */
-select concat(userid,p.permissionid) as uid, userid as user_id, concat(replace(permission, '{id}', userid),'%') as permission
+create or replace  view users_permissions as
+select userid , concat(userid,p.permissionid) as id, concat(replace(permission, '{id}', userid)) as permission
 from user_group_mapping um
 join group_permission_mapping gpm on um.groupid = gpm.groupid
 join permissions p on gpm.permissionid = p.permissionid;
@@ -72,7 +73,7 @@ values(1,2),(2,1);
 
 /*group permission*/
 insert into permissions(upermissionname, permission)
-values('all', '%'), ('SelfUserDetail', '/userdetail/{id}');
+values('all', '/'), ('SelfUserDetail', '/userdetail/{id}');
 
 insert into group_permission_mapping(groupid, permissionid)
 values(1,2),(2,1);
