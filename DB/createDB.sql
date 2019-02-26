@@ -9,7 +9,7 @@ CREATE TABLE users (
   userID INT PRIMARY KEY auto_increment,
   uuname varchar(255) not null,
   pwhash varchar(8000),
-  mail varchar(255)
+  mail varchar(255) default ''
 );
 
 CREATE UNIQUE INDEX users_uuname ON users (uuname);
