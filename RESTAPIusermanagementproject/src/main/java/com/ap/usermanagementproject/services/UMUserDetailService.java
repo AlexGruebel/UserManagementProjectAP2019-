@@ -1,10 +1,14 @@
 package com.ap.usermanagementproject.services;
 
-import com.ap.usermanagementproject.entities.User;
+import java.util.Set;
+
+import com.ap.usermanagementproject.entities.UserAuthorityEntity;
 import com.ap.usermanagementproject.entities.UserDetail;
 import com.ap.usermanagementproject.entities.UserPrincipal;
+import com.ap.usermanagementproject.entities.UserSecurityEntity;
 import com.ap.usermanagementproject.repositories.UserDetailRepository;
-import com.ap.usermanagementproject.repositories.UserRepository;
+import com.ap.usermanagementproject.repositories.UserPermissionRepository;
+import com.ap.usermanagementproject.repositories.UserSecurityRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,21 +20,27 @@ import org.springframework.stereotype.Service;
 public class UMUserDetailService implements UserDetailsService {
  
     
-    private UserDetailRepository userRepository;
+    private UserSecurityRepository userRepository;
+    private UserPermissionRepository permissionRepository;
+    
  
     @Autowired
-    public UMUserDetailService(UserDetailRepository userRepository){
+    public UMUserDetailService(UserSecurityRepository userRepository, UserPermissionRepository permissionRepository){
         this.userRepository = userRepository;
+        this.permissionRepository = permissionRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        UserDetail user = userRepository.findByUserName(username);
+        UserSecurityEntity user = userRepository.findByUserName(username);
         
+        Set<UserAuthorityEntity> permissions = permissionRepository.findByUserid(user.getId());
+        System.out.println(permissions.size());
+        user.setUserPermissions(permissions);
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-        
+       
         return new UserPrincipal(user);
     }
 }
