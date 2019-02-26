@@ -15,8 +15,9 @@ class ApiSingleton : public QObject
 public:
     static ApiSingleton& getInstance();
 
+    void login(QString user, QString pw);
     void userList();
-    QJsonObject userDetails(int id);
+    void userDetails(int id);
     void sendUserDetails(int id, QJsonDocument doc);
 private:
     ApiSingleton();
@@ -28,8 +29,13 @@ private:
 
     QNetworkAccessManager *m_restClient;
 
+    QString m_user = "";
+    QString m_pw = "";
+    QString createPWString(QString user, QString pw);
+
 signals:
     void userListReceived(QJsonObject list);
+    void userDetailsReceived(int id, QJsonObject details);
 };
 
 #endif // APISINGLETON_H

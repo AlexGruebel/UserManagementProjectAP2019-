@@ -18,7 +18,7 @@ private:
     MainWindow *ui;
     ApiSingleton *m_api;
 
-    void itemsFromJson(QJsonValue jsonRoot, QTreeWidgetItem *treeRoot);
+    void detailsFromJson(QJsonValue jsonRoot, QTreeWidgetItem *treeRoot);
     QTreeWidgetItem* recursiveJsonToTree(const QJsonValue &value, QTreeWidgetItem* parent);
 
     QList<QPair<int, QString>> jsonToUsers(QJsonObject jsonRoot);

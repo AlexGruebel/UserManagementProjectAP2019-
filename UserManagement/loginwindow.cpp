@@ -1,6 +1,8 @@
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
 
+#include "apisingleton.h"
+
 #include "QDebug"
 
 LoginWindow::LoginWindow(QWidget *parent) :
@@ -18,8 +20,7 @@ LoginWindow::~LoginWindow()
 
 void LoginWindow::login()
 {
-//    qDebug() << "Login Pressed";
-    //insert access to rest api
+    ApiSingleton::getInstance().login(ui->m_nameLineEdit->text(), ui->m_passwordLineEdit->text());
 
     emit loggedIn(true);
 }

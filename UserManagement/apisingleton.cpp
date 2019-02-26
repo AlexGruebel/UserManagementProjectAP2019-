@@ -14,6 +14,28 @@ ApiSingleton &ApiSingleton::getInstance()
     return instance;
 }
 
+void ApiSingleton::login(QString user, QString pw)
+{
+    // "root:admin@123"
+    QNetworkRequest request;
+    request.setUrl(QUrl(URL+"/userdetail/loggin/"+user));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QString concatenated = createPWString(user, pw); //username:password
+    QByteArray data = concatenated.toLocal8Bit().toBase64();
+    QString headerData = "Basic " + data;
+
+    request.setRawHeader("Authorization", headerData.toLocal8Bit());
+    QNetworkReply *reply=m_restClient->get(request);
+
+    connect(
+        reply, &QNetworkReply::finished,
+        [=]( )
+    {
+        qDebug() << reply->readAll();
+    });
+}
+
 ApiSingleton::ApiSingleton()
 {
     m_restClient = new QNetworkAccessManager(this); //constructor
@@ -32,7 +54,7 @@ void ApiSingleton::userList()
     request.setUrl(QUrl(URL+"/user"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    QString concatenated = "root:admin@123"; //username:password
+    QString concatenated = createPWString(m_user, m_pw); //username:password
     QByteArray data = concatenated.toLocal8Bit().toBase64();
     QString headerData = "Basic " + data;
 
@@ -47,35 +69,40 @@ void ApiSingleton::userList()
         emit userListReceived(stringToJsonObject(reply->readAll()));
         reply->deleteLater();
     });
+}
 
+void ApiSingleton::userDetails(int id)
+{
+    QNetworkRequest request;
+    request.setUrl(QUrl(URL+"/userdetail/"+QString::number(id)));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-//    //DEBUG
-////    QList<QPair<int, QString> > list = { {0,"one"}, {1,"two"}, {2,"three"} };
-////    return list;
-//    qDebug() << "Receive Userlist";
+    QString concatenated = createPWString(m_user, m_pw); //username:password
+    QByteArray data = concatenated.toLocal8Bit().toBase64();
+    QString headerData = "Basic " + data;
+
+    request.setRawHeader("Authorization", headerData.toLocal8Bit());
+    QNetworkReply *reply=m_restClient->get(request);
+
+    connect(
+        reply, &QNetworkReply::finished,
+        [=]( )
+    {
+//        qDebug() << reply->readAll();
+        emit userDetailsReceived(id, stringToJsonObject(reply->readAll()));
+        reply->deleteLater();
+    });
+
+//    qDebug() << "Receive Userdetails";
 //    QString data;
 
-//    QFile f("C:\\Users\\Adrian-Laptop\\Documents\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\user.json");
+//    QFile f("C:\\Users\\Adrian-Laptop\\Documents\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\userdetails_only1.json");
 //    if (f.open(QFile::ReadOnly | QFile::Text))
 //    {
 //        QTextStream in(&f);
 //        data = in.readAll();
 //    }
 //    return stringToJsonObject(data);
-}
-
-QJsonObject ApiSingleton::userDetails(int id)
-{
-    qDebug() << "Receive Userdetails";
-    QString data;
-
-    QFile f("C:\\Users\\Adrian-Laptop\\Documents\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\userdetails_only1.json");
-    if (f.open(QFile::ReadOnly | QFile::Text))
-    {
-        QTextStream in(&f);
-        data = in.readAll();
-    }
-    return stringToJsonObject(data);
 }
 
 QJsonObject ApiSingleton::stringToJsonObject(QString s)
@@ -103,16 +130,27 @@ QJsonObject ApiSingleton::stringToJsonObject(QString s)
     return obj;
 }
 
+QString ApiSingleton::createPWString(QString user, QString pw)
+{
+    return user+":"+pw;
+}
+
 void ApiSingleton::sendUserDetails(int id, QJsonDocument doc)
 {
-    QString strJson(doc.toJson(QJsonDocument::Indented));
-    QFile f("C:\\Users\\Adrian-Laptop\\Documents\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\json_output.json");
-    if (f.open(QFile::WriteOnly | QFile::Text))
-    {
-        QTextStream out(&f);
-        out << strJson;
-    }
+    QNetworkRequest request;
+    request.setUrl(QUrl(URL+"/userdetail/"+QString::number(id)));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QString concatenated = createPWString(m_user, m_pw); //username:password
+    QByteArray data = concatenated.toLocal8Bit().toBase64();
+    QString headerData = "Basic " + data;
+
+    request.setRawHeader("Authorization", headerData.toLocal8Bit());
+    qDebug() << doc.toJson();
+    QNetworkReply *reply=m_restClient->put(request, doc.toJson());
+    qDebug() << reply->readAll();
 }
+
 
 
 

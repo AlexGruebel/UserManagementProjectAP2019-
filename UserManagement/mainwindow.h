@@ -26,6 +26,8 @@ public:
 
     void blockTreeWidgetSignal(bool val);
 
+    QTreeWidgetItem *getTreeItemFromId(int id);
+
 private:
     Ui::MainWindow *ui;
     int m_admintab = 0;
@@ -36,7 +38,7 @@ private:
     void onTreeWidgetItemDoubleClicked(QTreeWidgetItem *item, int column);
     bool isColumnEditable(int column);
 signals:
-    void userExpanded(int id, QTreeWidgetItem *item);
+    void userExpanded(int id);
     void userEdited(int id, QTreeWidgetItem *root);
 };
 
