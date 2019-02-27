@@ -6,19 +6,19 @@
 #include <QJsonObject>
 #include <memory>
 
-static const QString URL = "http://localhost:8080/api";
-
 ApiSingleton &ApiSingleton::getInstance()
 {
     static ApiSingleton instance;
     return instance;
 }
 
-void ApiSingleton::login(QString user, QString pw)
+void ApiSingleton::login(QString user, QString pw, QString url)
 {
     // "root:admin@123"
+    m_url = "http://"+url+"/api";
+
     QNetworkRequest request;
-    request.setUrl(QUrl(URL+"/userdetail/isAdmin/"+user));
+    request.setUrl(QUrl(m_url+"/userdetail/isAdmin/"+user));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QString concatenated = createPWString(user, pw); //username:password
@@ -36,17 +36,30 @@ void ApiSingleton::login(QString user, QString pw)
         [=]( )
     {
         QString tmp= reply->readAll();
-        if(tmp.toLower() == "false")
+
+        if(reply->error() == QNetworkReply::ProtocolInvalidOperationError)
         {
-            emit loginReceived(1);
+            emit loginReceived(serverError);
         }
-        else if(tmp.toLower() == "true")
+        else if(reply->error() == QNetworkReply::AuthenticationRequiredError)
         {
-            emit loginReceived(2);
+            emit loginReceived(authenticationError);
+        }
+        else if (reply->error() == QNetworkReply::NoError)
+        {
+            if(tmp.toLower() == "true")
+            {
+                emit loginReceived(loginAdmin);
+            }
+            else
+            {
+                emit loginReceived(loginUser);
+            }
         }
         else
         {
-            emit loginReceived(0);
+            qDebug() << reply->error();
+            emit loginReceived(generalError);
         }
     });
 }
@@ -67,7 +80,7 @@ ApiSingleton::ApiSingleton()
 void ApiSingleton::userList()
 {
     QNetworkRequest request;
-    request.setUrl(QUrl(URL+"/user"));
+    request.setUrl(QUrl(m_url+"/user"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QString concatenated = createPWString(m_user, m_pw); //username:password
@@ -90,7 +103,7 @@ void ApiSingleton::userList()
 void ApiSingleton::userDetails(int id)
 {
     QNetworkRequest request;
-    request.setUrl(QUrl(URL+"/userdetail/"+QString::number(id)));
+    request.setUrl(QUrl(m_url+"/userdetail/"+QString::number(id)));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QString concatenated = createPWString(m_user, m_pw); //username:password
@@ -154,7 +167,7 @@ QString ApiSingleton::createPWString(QString user, QString pw)
 void ApiSingleton::sendUserDetails(int id, QJsonDocument doc)
 {
     QNetworkRequest request;
-    request.setUrl(QUrl(URL+"/userdetail/"+QString::number(id)));
+    request.setUrl(QUrl(m_url+"/userdetail/"+QString::number(id)));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QString concatenated = createPWString(m_user, m_pw); //username:password

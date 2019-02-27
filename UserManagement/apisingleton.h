@@ -13,9 +13,18 @@ class ApiSingleton : public QObject
 {
     Q_OBJECT
 public:
+    enum loginReply
+    {
+        authenticationError,
+        serverError,
+        generalError,
+        loginUser,
+        loginAdmin
+    };
+
     static ApiSingleton& getInstance();
 
-    void login(QString user, QString pw);
+    void login(QString user, QString pw, QString url);
     void userList();
     void userDetails(int id);
     void sendUserDetails(int id, QJsonDocument doc);
@@ -31,12 +40,13 @@ private:
 
     QString m_user = "";
     QString m_pw = "";
+    QString m_url = "";
     QString createPWString(QString user, QString pw);
 
 signals:
     void userListReceived(QJsonObject list);
     void userDetailsReceived(int id, QJsonObject details);
-    void loginReceived(int status);
+    void loginReceived(loginReply r);
 };
 
 #endif // APISINGLETON_H

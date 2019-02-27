@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "apisingleton.h"
+
 namespace Ui
 {
 class LoginWindow;
@@ -18,7 +20,7 @@ public:
 
 private:
     Ui::LoginWindow *ui;
-    void login(int status);
+    void login(ApiSingleton::loginReply status);
 
 signals:
     void loggedIn(bool admin);
