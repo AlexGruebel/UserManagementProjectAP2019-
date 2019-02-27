@@ -51,11 +51,15 @@ void Controll::initMainWindow(bool admin)
     ui->setWindowTitle("User Administration Tool");
     ui->show();
 
+    ui->initTree();
+
     connect(
         m_api, &ApiSingleton::userListReceived,
         [=]( QJsonObject obj )
     {
-        ui->initTree(jsonToUsers(obj));
+        ui->blockTreeWidgetSignal(true);
+        ui->addUserList(jsonToUsers(obj));
+        ui->blockTreeWidgetSignal(false);
     });
 
     m_api->userList();
@@ -81,6 +85,25 @@ void Controll::initMainWindow(bool admin)
         QJsonDocument obj = toJson(root);
         m_api->sendUserDetails(id, obj);
 
+    });
+
+    connect(
+        ui, &MainWindow::userDeleted,
+        [=]( int id )
+    {
+        m_api->deleteUser(id);
+    });
+
+    connect(
+        ui, &MainWindow::userAdded,
+        [=]( QString str )
+    {
+        QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
+        if(doc.isNull())
+        {
+            qDebug() << "Json not valid";
+        }
+        m_api->addUser(doc);
     });
 }
 

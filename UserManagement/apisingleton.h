@@ -28,6 +28,10 @@ public:
     void userList();
     void userDetails(int id);
     void sendUserDetails(int id, QJsonDocument doc);
+
+    void addUser(QJsonDocument doc);
+    void deleteUser(int id);
+
 private:
     ApiSingleton();
     ~ApiSingleton()= default;

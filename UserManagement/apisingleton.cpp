@@ -175,9 +175,64 @@ void ApiSingleton::sendUserDetails(int id, QJsonDocument doc)
     QString headerData = "Basic " + data;
 
     request.setRawHeader("Authorization", headerData.toLocal8Bit());
-    qDebug() << doc.toJson();
+//    qDebug() << doc.toJson();
     QNetworkReply *reply=m_restClient->put(request, doc.toJson());
-    qDebug() << reply->readAll();
+
+    connect(
+        reply, &QNetworkReply::finished,
+        [=]( )
+    {
+//        qDebug() << reply->readAll();
+        //TODO updateUser to see if changes worked
+//        emit userDetailsReceived(id, stringToJsonObject(reply->readAll()));
+        reply->deleteLater();
+    });
+//    qDebug() << reply->readAll();
+}
+
+void ApiSingleton::addUser(QJsonDocument doc)
+{
+    QNetworkRequest request;
+    request.setUrl(QUrl(m_url+"/userdetail"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QString concatenated = createPWString(m_user, m_pw); //username:password
+    QByteArray data = concatenated.toLocal8Bit().toBase64();
+    QString headerData = "Basic " + data;
+
+    request.setRawHeader("Authorization", headerData.toLocal8Bit());
+    QNetworkReply *reply=m_restClient->post(request, doc.toJson());
+    connect(
+        reply, &QNetworkReply::finished,
+        [=]( )
+    {
+        qDebug() << reply->readAll();
+        this->userList();
+        reply->deleteLater();
+    });
+}
+
+void ApiSingleton::deleteUser(int id)
+{
+    QNetworkRequest request;
+    request.setUrl(QUrl(m_url+"/userdetail/"+QString::number(id)));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QString concatenated = createPWString(m_user, m_pw); //username:password
+    QByteArray data = concatenated.toLocal8Bit().toBase64();
+    QString headerData = "Basic " + data;
+
+    request.setRawHeader("Authorization", headerData.toLocal8Bit());
+    QNetworkReply *reply=m_restClient->deleteResource(request);
+    connect(
+        reply, &QNetworkReply::finished,
+        [=]( )
+    {
+//        qDebug() << reply->readAll();
+        this->userList();
+        reply->deleteLater();
+    });
+//    qDebug() << reply->readAll();
 }
 
 

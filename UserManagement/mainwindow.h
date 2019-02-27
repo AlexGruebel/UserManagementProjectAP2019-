@@ -18,7 +18,8 @@ public:
     virtual ~MainWindow();
 
     void showAdminTab(bool show);
-    void initTree(QList<QPair<int, QString> > userList);
+    void initTree();
+    void addUserList(QList<QPair<int, QString> > userList);
 
     QTreeWidgetItem *addUserValue(QString key, QVariant val, QTreeWidgetItem *parent);
     QTreeWidgetItem *getUserItem() const;
@@ -32,14 +33,16 @@ private:
     Ui::MainWindow *ui;
     int m_admintab = 0;
 
-    QTreeWidgetItem *userItem = new QTreeWidgetItem({"Users", ""});
-    QTreeWidgetItem *groupItem = new QTreeWidgetItem({"Groups", ""});
-    QTreeWidgetItem *permissionItem = new QTreeWidgetItem({"Permissions", ""});
+    QTreeWidgetItem *userItem;
+//    QTreeWidgetItem *groupItem = new QTreeWidgetItem({"Groups", ""});
+//    QTreeWidgetItem *permissionItem = new QTreeWidgetItem({"Permissions", ""});
     void onTreeWidgetItemDoubleClicked(QTreeWidgetItem *item, int column);
     bool isColumnEditable(int column);
 signals:
     void userExpanded(int id);
     void userEdited(int id, QTreeWidgetItem *root);
+    void userDeleted(int id);
+    void userAdded(QString str);
 };
 
 #endif // MAINWINDOW_H

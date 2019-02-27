@@ -6,6 +6,7 @@
 
 #include <QTreeView>
 #include <QMessageBox>
+#include <QInputDialog>
 
 enum itemTypes
 {
@@ -18,6 +19,46 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    connect(
+        ui->m_addUserButton, &QPushButton::pressed,
+        [=](  )
+    {
+        bool ok;
+        QString text = QInputDialog::getMultiLineText(this, "Json Input field",
+                       tr("User Json:"), "", &ok);
+        if (ok && !text.isEmpty())
+        {
+            emit userAdded(text);
+        }
+    });
+
+    connect(
+        ui->m_deleteUserButton, &QPushButton::pressed,
+        [=](  )
+    {
+        bool ok = false;
+        int id = ui->m_deleteUserId->text().toInt(&ok, 10);
+        if(ok)
+        {
+            if(id <0)
+            {
+                QMessageBox msgBox;
+                msgBox.setText("Please insert a positiv number");
+                msgBox.exec();
+            }
+            else
+            {
+                emit userDeleted(id);
+            }
+        }
+        else
+        {
+            QMessageBox msgBox;
+            msgBox.setText("Please insert a number");
+            msgBox.exec();
+        }
+    });
 }
 
 MainWindow::~MainWindow()
@@ -37,17 +78,37 @@ void MainWindow::showAdminTab(bool show)
     }
 }
 
-void MainWindow::initTree(QList<QPair<int, QString>> userList)
+void MainWindow::addUserList(QList<QPair<int, QString> > userList)
 {
+    ui->treeWidget->clear();
+
+    userItem = new QTreeWidgetItem({"Users", ""});
     ui->treeWidget->addTopLevelItem(userItem);
+    userItem->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
+
+    for (int var = 0; var < userList.size(); ++var)
+    {
+        //item with id and userName (problem, what happens on editing id or userName)
+        QTreeWidgetItem *item = new QTreeWidgetItem({QString::number(userList.at(var).first), userList.at(var).second}, itemTypes::user);
+        //item without id and userName
+//        QTreeWidgetItem *item = new QTreeWidgetItem({"User"}, itemTypes::user);
+        item->setData(0, Qt::UserRole, userList.at(var).first);
+        item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+        item->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
+        userItem->addChild(item);
+    }
+}
+
+void MainWindow::initTree()
+{
     //Not enough time to implement group and permission editing
 //    ui->treeWidget->addTopLevelItem(groupItem);
 //    ui->treeWidget->addTopLevelItem(permissionItem);
 
     ui->treeWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    userItem->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
-    groupItem->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
-    permissionItem->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
+
+//    groupItem->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
+//    permissionItem->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
 
     connect(
         ui->treeWidget, &QTreeWidget::itemExpanded,
@@ -97,18 +158,6 @@ void MainWindow::initTree(QList<QPair<int, QString>> userList)
         }
         emit userEdited(superParent->data(0, Qt::UserRole).toInt(), superParent->child(0));
     });
-
-    for (int var = 0; var < userList.size(); ++var)
-    {
-        //item with id and userName (problem, what happens on editing id or userName)
-        QTreeWidgetItem *item = new QTreeWidgetItem({QString::number(userList.at(var).first), userList.at(var).second}, itemTypes::user);
-        //item without id and userName
-//        QTreeWidgetItem *item = new QTreeWidgetItem({"User"}, itemTypes::user);
-        item->setData(0, Qt::UserRole, userList.at(var).first);
-        item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-        item->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
-        userItem->addChild(item);
-    }
 }
 
 //QTreeWidgetItem *MainWindow::addUserValue(QString key, QVariant val, QTreeWidgetItem *parent)

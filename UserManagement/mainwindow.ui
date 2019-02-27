@@ -25,7 +25,36 @@
         <string>Admin</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
+        <item row="1" column="1">
+         <widget class="QFrame" name="frame">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QPushButton" name="m_addUserButton">
+             <property name="text">
+              <string>Add User</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="m_deleteUserButton">
+             <property name="text">
+              <string>Delete User</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="m_deleteUserId"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="0" rowspan="4">
          <widget class="QTreeWidget" name="treeWidget">
           <property name="styleSheet">
            <string notr="true">QTreeView::branch:has-siblings:!adjoins-item {
@@ -69,6 +98,19 @@ QTreeView::branch:open:has-children:has-siblings  {
            </property>
           </column>
          </widget>
+        </item>
+        <item row="2" column="1">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>
