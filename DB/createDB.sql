@@ -73,7 +73,7 @@ values(1,2),(2,1);
 
 /*group permission*/
 insert into permissions(upermissionname, permission)
-values('all', '/'), ('SelfUserDetail', '/userdetail/{id}');
+values('all', '/'), ('SelfUserDetail', '/api/userdetail/{id}');
 
 insert into group_permission_mapping(groupid, permissionid)
 values(1,2),(2,1);
