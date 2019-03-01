@@ -197,10 +197,10 @@ QJsonValue Controll::recursiveTreeToJson(QTreeWidgetItem *item)
         {
             return QJsonValue(item->text(1).toDouble());
         }
-        else if(item->data(1, Qt::UserRole) == QJsonValue::Null)
-        {
-            return QJsonValue();
-        }
+//        else if(item->data(1, Qt::UserRole) == QJsonValue::Null)
+//        {
+//            return QJsonValue();
+//        }
         else
         {
             return QJsonValue(item->text(1));
