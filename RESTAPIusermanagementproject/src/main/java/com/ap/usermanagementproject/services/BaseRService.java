@@ -12,9 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public abstract class BaseRService<T extends IEntity, R extends JpaRepository<T, Integer>> {
     private R repository;
 
-    /**
-     * @param jpaRepository the jpaRepository to set
-     */
     @Autowired
     public void setRepository(R repository) {
         this.repository = repository;
@@ -24,11 +21,16 @@ public abstract class BaseRService<T extends IEntity, R extends JpaRepository<T,
         return this.repository;
     }
 
+    /**
+     * returns an specific range of Entites
+     * @param Pageable to specify the range of entities to return for example the first 100 Entities in the DB
+     * @return Page
+     */
     public Page<T> findAll(Pageable pageable) {
-        return this.repository.findAll(pageable);
+        return getRepository().findAll(pageable);
     }
 
     public List<T> findAll() {
-        return this.repository.findAll();
+        return getRepository().findAll();
     }
 }

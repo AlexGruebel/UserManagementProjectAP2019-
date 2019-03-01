@@ -18,17 +18,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
    
     private UMUserDetailService userDetailService;
-    private UserPermissionRepository userPermissionRepository;
 
     @Autowired
     public SecurityConfig(UMUserDetailService userDetailService, UserPermissionRepository userPermissionRepository){
         this.userDetailService = userDetailService;
-        this.userPermissionRepository = userPermissionRepository;
     }
     
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-       //auth.inMemoryAuthentication().withUser("user").password(encoder().encode("password")).roles("Admin").and().passwordEncoder(encoder());
        auth.userDetailsService(this.userDetailService).passwordEncoder(encoder());
     }
  

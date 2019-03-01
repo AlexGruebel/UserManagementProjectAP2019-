@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class UserDetail extends BaseUser {
     @JsonIgnore
     private String pwhash;
+    
     private String mail;
 
     @ManyToMany
@@ -39,7 +40,7 @@ public class UserDetail extends BaseUser {
      * @return the mail
      */
     public String getMail() {
-        return mail;
+        return mail == null ? "" : mail;
     }
     /**
      * @param mail the mail to set
