@@ -11,11 +11,11 @@ public class CheckPermissionUtil {
 
     private CheckPermissionUtil(){}
 
-    /*
-    0 => read
-    1 => modify (no arrays)
-    2 => modify all
-    */
+    /**
+     * check if one of the GrantedAuthority grants the user the right to access the url
+     * @param uri request url
+     * @param permissions all the GrantedAuthoritys of the user to check
+     */
     public static void checkPermission(String uri, Collection<GrantedAuthority> permissions) throws AccessDeniedException {
         Optional<GrantedAuthority> first = permissions.stream().filter(e-> uri.startsWith(e.getAuthority())).findFirst();
         if (!first.isPresent()){
