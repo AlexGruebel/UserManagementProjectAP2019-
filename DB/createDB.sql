@@ -44,7 +44,7 @@ CREATE TABLE group_permission_mapping (
 );
 
 alter table group_permission_mapping add foreign key (groupid) references user_groups (groupid);
-alter table group_permission_mapping add foreign key (permissionid) references permission (permissionid);
+alter table group_permission_mapping add foreign key (permissionid) references permissions (permissionid);
 
 create view users_permissions as
 select userid , concat(userid,p.permissionid) as id, concat(replace(permission, '{id}', userid)) as permission
