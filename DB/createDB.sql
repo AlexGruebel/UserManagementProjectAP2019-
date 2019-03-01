@@ -29,6 +29,7 @@ CREATE TABLE user_group_mapping(
 );
 
 alter table user_group_mapping add foreign key (userid) references users (userID);
+alter table user_group_mapping add foreign key (groupid) references user_groups (groupid);
 
 CREATE TABLE permissions (
   permissionid int PRIMARY KEY auto_increment,
@@ -42,7 +43,10 @@ CREATE TABLE group_permission_mapping (
   PRIMARY KEY (groupid, permissionid)
 );
 
-create or replace  view users_permissions as
+alter table group_permission_mapping add foreign key (groupid) references user_groups (groupid);
+alter table group_permission_mapping add foreign key (permissionid) references permission (permissionid);
+
+create view users_permissions as
 select userid , concat(userid,p.permissionid) as id, concat(replace(permission, '{id}', userid)) as permission
 from user_group_mapping um
 join group_permission_mapping gpm on um.groupid = gpm.groupid
@@ -50,16 +54,15 @@ join permissions p on gpm.permissionid = p.permissionid;
 
 /*create service user*/
 
-drop user if exists 'restService'@'%';
-create user 'restService'@'%' IDENTIFIED BY 'my-secret-pw';
+drop user if exists 'restService'@'localhost';
+create user 'restService'@'localhost' IDENTIFIED BY 'my-secret-pw';
 
-GRANT ALL PRIVILEGES  ON UserManagementProject.* to 'restService'@'%';
+GRANT ALL PRIVILEGES  ON UserManagementProject.* to 'restService'@'localhost';
 
 
 /*default data*/
 
 /*standart groups*/
-
 INSERT INTO user_groups(ugroupname, description)
 VALUES('user', 'default group for every user'), ('admin', 'admin group');
 
@@ -75,5 +78,6 @@ values(1,2),(2,1);
 insert into permissions(upermissionname, permission)
 values('all', '/'), ('SelfUserDetail', '/api/userdetail/{id}');
 
+/*group permission mapping*/
 insert into group_permission_mapping(groupid, permissionid)
 values(1,2),(2,1);
