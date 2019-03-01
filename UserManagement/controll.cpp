@@ -13,10 +13,6 @@ Controll::Controll(QObject *parent) :
     w = new LoginWindow();
     w->setWindowTitle("User Administration Login");
     w->show();
-//    connect(
-//        w, &LoginWindow::loggedIn,
-//        this, &Controll::initMainWindow
-//    );
     connect(
         w, &LoginWindow::loggedIn,
         [=]( bool admin )
@@ -112,13 +108,6 @@ void Controll::detailsFromJson(QJsonValue jsonRoot, QTreeWidgetItem *treeRoot)
     ui->blockTreeWidgetSignal(true);
     treeRoot->addChild(recursiveJsonToTree(jsonRoot, treeRoot));
     ui->blockTreeWidgetSignal(false);
-
-    //Debug
-//    foreach(const QString& key, obj.keys())
-//    {
-//        QJsonValue value = obj.value(key);
-//        qDebug() << "Key = " << key << ", Value = " << value.toInt();
-//    }
 }
 
 QTreeWidgetItem* Controll::recursiveJsonToTree(const QJsonValue& value, QTreeWidgetItem* parent)
@@ -197,6 +186,7 @@ QJsonValue Controll::recursiveTreeToJson(QTreeWidgetItem *item)
         {
             return QJsonValue(item->text(1).toDouble());
         }
+        //Print NULL as String
 //        else if(item->data(1, Qt::UserRole) == QJsonValue::Null)
 //        {
 //            return QJsonValue();

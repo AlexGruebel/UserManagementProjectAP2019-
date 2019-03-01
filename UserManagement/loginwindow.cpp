@@ -52,9 +52,3 @@ void LoginWindow::login(ApiSingleton::loginReply status)
     }
 }
 
-//bool string2bool (const QString &str)
-//{
-//    return !str.empty () &&
-//        (strcasecmp (str.c_str (), "true") == 0 ||
-//         atoi (str.c_str ()) != 0);
-//}

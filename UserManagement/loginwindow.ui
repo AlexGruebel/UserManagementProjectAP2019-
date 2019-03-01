@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>387</width>
-    <height>178</height>
+    <width>421</width>
+    <height>174</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -64,9 +64,6 @@
       </item>
      </layout>
     </item>
-    <item row="2" column="0">
-     <widget class="QCalendarWidget" name="calendarWidget"/>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -74,7 +71,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>387</width>
+     <width>421</width>
      <height>21</height>
     </rect>
    </property>

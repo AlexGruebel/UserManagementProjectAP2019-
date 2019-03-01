@@ -68,13 +68,6 @@ void ApiSingleton::login(QString user, QString pw, QString url)
 ApiSingleton::ApiSingleton()
 {
     m_restClient = new QNetworkAccessManager(this); //constructor
-
-//    connect(
-//        m_restClient, &QNetworkAccessManager::finished,
-//        [=]( QNetworkReply* reply )
-//    {
-//        qDebug() << reply->readAll();
-//    });
 }
 
 void ApiSingleton::userList()
@@ -121,17 +114,6 @@ void ApiSingleton::userDetails(int id)
         emit userDetailsReceived(id, stringToJsonObject(reply->readAll()));
         reply->deleteLater();
     });
-
-//    qDebug() << "Receive Userdetails";
-//    QString data;
-
-//    QFile f("C:\\Users\\Adrian-Laptop\\Documents\\Projects\\UserManagementProjectAP2019-\\UserManagement\\json\\userdetails_only1.json");
-//    if (f.open(QFile::ReadOnly | QFile::Text))
-//    {
-//        QTextStream in(&f);
-//        data = in.readAll();
-//    }
-//    return stringToJsonObject(data);
 }
 
 QJsonObject ApiSingleton::stringToJsonObject(QString s)

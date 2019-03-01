@@ -160,14 +160,6 @@ void MainWindow::initTree()
     });
 }
 
-//QTreeWidgetItem *MainWindow::addUserValue(QString key, QVariant val, QTreeWidgetItem *parent)
-//{
-//    QTreeWidgetItem *item = new QTreeWidgetItem({key, val.toString()}, itemTypes::value);
-//    item->setFlags(Qt::ItemIsEditable|Qt::ItemIsEnabled);
-//    parent->addChild(item);
-//    return item;
-//}
-
 QTreeWidgetItem *MainWindow::getUserItem() const
 {
     return userItem;
