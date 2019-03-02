@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="user_groups")
-public class GroupDetail extends BaseGroup {
+public class GroupDetailEntity extends BaseGroup {
 
     private String description;
 
@@ -51,7 +51,7 @@ public class GroupDetail extends BaseGroup {
 
     @Override
     public IEntity merge(IEntity entity){
-        GroupDetail ngroup =  (GroupDetail) super.merge(entity);
+        GroupDetailEntity ngroup =  (GroupDetailEntity) super.merge(entity);
 
         if(ngroup.getDescription() != null){
             this.setDescription(ngroup.getDescription());
