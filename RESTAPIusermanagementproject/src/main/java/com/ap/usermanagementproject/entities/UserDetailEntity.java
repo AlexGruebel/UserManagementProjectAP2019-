@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "users")
-public class UserDetail extends BaseUser {
+public class UserDetailEntity extends BaseUser {
     @JsonIgnore
     private String pwhash;
     
@@ -65,7 +65,7 @@ public class UserDetail extends BaseUser {
 
     @Override
     public Object clone(){
-        UserDetail clone = new UserDetail();
+        UserDetailEntity clone = new UserDetailEntity();
         clone.setId(getId());
         clone.setUserName(getUserName());
         clone.setMail(getMail());
@@ -76,7 +76,7 @@ public class UserDetail extends BaseUser {
 
     @Override
     public IEntity merge(IEntity entity){
-        UserDetail nUserDetail = (UserDetail) entity;
+        UserDetailEntity nUserDetail = (UserDetailEntity) entity;
 
         if(nUserDetail.getGroups().size() != 0){
             this.setGroups(nUserDetail.getGroups());

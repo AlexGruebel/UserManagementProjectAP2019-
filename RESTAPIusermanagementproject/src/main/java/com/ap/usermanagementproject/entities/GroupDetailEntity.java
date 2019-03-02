@@ -19,7 +19,7 @@ public class GroupDetailEntity extends BaseGroup {
     @JoinTable(name = "group_permission_mapping"
               ,joinColumns = @JoinColumn(name = "groupid")
               ,inverseJoinColumns = @JoinColumn(name = "permissionid"))
-    private Set<Permission> permissions = new HashSet<Permission>();
+    private Set<PermissionEntity> permissions = new HashSet<PermissionEntity>();
 
     /**
      * @param description the description to set
@@ -38,14 +38,14 @@ public class GroupDetailEntity extends BaseGroup {
     /**
      * @return the permissions
      */
-    public Set<Permission> getPermissions() {
+    public Set<PermissionEntity> getPermissions() {
         return permissions;
     }
 
     /**
      * @param permissions the permissions to set
      */
-    public void setPermissions(Set<Permission> permissions) {
+    public void setPermissions(Set<PermissionEntity> permissions) {
         this.permissions = permissions;
     }
 
