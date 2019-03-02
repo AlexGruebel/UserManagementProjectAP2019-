@@ -2,7 +2,7 @@ package com.ap.usermanagementproject.services;
 
 import java.util.Set;
 
-import com.ap.usermanagementproject.entities.Group;
+import com.ap.usermanagementproject.entities.GroupEntity;
 import com.ap.usermanagementproject.entities.UserDetail;
 import com.ap.usermanagementproject.entities.UserDetailWithPWEntity;
 import com.ap.usermanagementproject.repositories.UserDetailRepository;
@@ -63,7 +63,7 @@ public class UserDetailCRUDService extends BaseCRUDService<UserDetail, UserDetai
      * @return a boolean is the given user an admin
      */
     public boolean isAdmin(String userName){
-        Set<Group> groups = this.findEntityByName(userName).getGroups();
+        Set<GroupEntity> groups = this.findEntityByName(userName).getGroups();
         return groups.stream().filter(e -> e.getGroupname().equals("admin")).findFirst().isPresent();
     }
 }
