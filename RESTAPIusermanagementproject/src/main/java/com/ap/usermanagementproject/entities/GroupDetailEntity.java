@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="user_groups")
-public class GroupDetail extends BaseGroup {
+public class GroupDetailEntity extends BaseGroup {
 
     private String description;
 
@@ -19,7 +19,7 @@ public class GroupDetail extends BaseGroup {
     @JoinTable(name = "group_permission_mapping"
               ,joinColumns = @JoinColumn(name = "groupid")
               ,inverseJoinColumns = @JoinColumn(name = "permissionid"))
-    private Set<Permission> permissions = new HashSet<Permission>();
+    private Set<PermissionEntity> permissions = new HashSet<PermissionEntity>();
 
     /**
      * @param description the description to set
@@ -38,20 +38,20 @@ public class GroupDetail extends BaseGroup {
     /**
      * @return the permissions
      */
-    public Set<Permission> getPermissions() {
+    public Set<PermissionEntity> getPermissions() {
         return permissions;
     }
 
     /**
      * @param permissions the permissions to set
      */
-    public void setPermissions(Set<Permission> permissions) {
+    public void setPermissions(Set<PermissionEntity> permissions) {
         this.permissions = permissions;
     }
 
     @Override
     public IEntity merge(IEntity entity){
-        GroupDetail ngroup =  (GroupDetail) super.merge(entity);
+        GroupDetailEntity ngroup =  (GroupDetailEntity) super.merge(entity);
 
         if(ngroup.getDescription() != null){
             this.setDescription(ngroup.getDescription());

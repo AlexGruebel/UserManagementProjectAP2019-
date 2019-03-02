@@ -1,5 +1,5 @@
 package com.ap.usermanagementproject.repositories;
-import com.ap.usermanagementproject.entities.Permission;
+import com.ap.usermanagementproject.entities.PermissionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PermissionRepository extends JpaRepository<Permission, Integer> {}
+public interface PermissionRepository extends JpaRepository<PermissionEntity, Integer> {}

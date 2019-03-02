@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "users")
-public class UserDetail extends BaseUser {
+public class UserDetailEntity extends BaseUser {
     @JsonIgnore
     private String pwhash;
     
@@ -20,7 +20,7 @@ public class UserDetail extends BaseUser {
 
     @ManyToMany
     @JoinTable(name = "user_group_mapping", joinColumns = @JoinColumn(name = "userid"), inverseJoinColumns = @JoinColumn(name = "groupid"))
-    private Set<Group> groups = new HashSet<Group>();
+    private Set<GroupEntity> groups = new HashSet<GroupEntity>();
 
     /**
      * @return the pwhash
@@ -52,20 +52,20 @@ public class UserDetail extends BaseUser {
     /**
      * @param groups the groups to set
      */
-    public void setGroups(Set<Group> groups) {
+    public void setGroups(Set<GroupEntity> groups) {
         this.groups = groups;
     }
 
     /**
      * @return the groups
      */
-    public Set<Group> getGroups() {
+    public Set<GroupEntity> getGroups() {
         return groups;
     }
 
     @Override
     public Object clone(){
-        UserDetail clone = new UserDetail();
+        UserDetailEntity clone = new UserDetailEntity();
         clone.setId(getId());
         clone.setUserName(getUserName());
         clone.setMail(getMail());
@@ -76,7 +76,7 @@ public class UserDetail extends BaseUser {
 
     @Override
     public IEntity merge(IEntity entity){
-        UserDetail nUserDetail = (UserDetail) entity;
+        UserDetailEntity nUserDetail = (UserDetailEntity) entity;
 
         if(nUserDetail.getGroups().size() != 0){
             this.setGroups(nUserDetail.getGroups());

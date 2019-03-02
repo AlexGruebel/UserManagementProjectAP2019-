@@ -7,7 +7,7 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class UserDetailWithPWEntity extends UserDetail {
+public class UserDetailWithPWEntity extends UserDetailEntity {
     @Transient
     private String password;
 

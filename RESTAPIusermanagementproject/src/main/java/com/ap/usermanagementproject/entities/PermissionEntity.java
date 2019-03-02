@@ -12,7 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @DynamicUpdate
 @Table(name="permissions")
-public class Permission implements IEntity{
+public class PermissionEntity implements IEntity{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="permissionid")
@@ -64,7 +64,7 @@ public class Permission implements IEntity{
     }
 
     public IEntity merge(IEntity entity){
-        Permission npermission = (Permission) entity;
+        PermissionEntity npermission = (PermissionEntity) entity;
 
         if(npermission.getPermission() != null){
             this.setPermission(npermission.getPermission());

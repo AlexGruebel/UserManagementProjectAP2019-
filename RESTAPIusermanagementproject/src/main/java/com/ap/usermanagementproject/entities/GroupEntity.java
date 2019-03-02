@@ -7,4 +7,4 @@ import javax.persistence.Table;
 @Entity(name="group")
 @Table(name = "user_groups")
 @Embeddable
-public class Group extends BaseGroup{}
+public class GroupEntity extends BaseGroup{}

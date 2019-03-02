@@ -3,7 +3,7 @@ package com.ap.usermanagementproject.services;
 import java.util.Set;
 
 import com.ap.usermanagementproject.entities.UserAuthorityEntity;
-import com.ap.usermanagementproject.entities.UserDetail;
+import com.ap.usermanagementproject.entities.UserDetailEntity;
 import com.ap.usermanagementproject.entities.UserPrincipal;
 import com.ap.usermanagementproject.entities.UserSecurityEntity;
 import com.ap.usermanagementproject.repositories.UserDetailRepository;

@@ -1,6 +1,6 @@
 package com.ap.usermanagementproject.controller;
 
-import com.ap.usermanagementproject.entities.GroupDetail;
+import com.ap.usermanagementproject.entities.GroupDetailEntity;
 import com.ap.usermanagementproject.repositories.GroupDetailRepository;
 import com.ap.usermanagementproject.services.GroupDetailCRUDService;
 
@@ -9,4 +9,4 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
 @RequestMapping("/api/groupdetail")
-public class GroupDetailController extends BaseController<GroupDetail, GroupDetailRepository, GroupDetailCRUDService>{}
+public class GroupDetailController extends BaseController<GroupDetailEntity, GroupDetailRepository, GroupDetailCRUDService>{}
